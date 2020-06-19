@@ -9,18 +9,25 @@ int main(void)
     int x;
     
     do
-    n = get_int("please enter a hight between 1 and 8:");
-    while (n<=0 || n>=9);
+    {
+        //asks for height
+        n = get_int("please enter a hight between 1 and 8:");
+    }
+    //sorts and rejects input
+    while (n < = 0 || n >= 9);
     
-        for (i=1; i<n+1; i++){
-            for (x = (n - i); x>0; x--){
+    for (i = 1; i < n + 1; i++)
+    {
+        //corrects the spacing
+        for (x = (n - i); x > 0; x--)
+        {
             printf(" ");
                 
-            }
-            for (j=0; j<i; j++)
-                {
-                printf("#");
-                }   
-                printf("\n");
         }
+        for (j = 0; j < i; j++)
+        {
+            printf("#");
+        }   
+        printf("\n");
+    }
 }
