@@ -14,7 +14,7 @@ int main(void)
         n = get_int("please enter a hight between 1 and 8:");
     }
     //sorts and rejects input
-    while (n < = 0 || n >= 9);
+    while (n <= 0 || n >= 9);
     
     for (i = 1; i < n + 1; i++)
     {
