@@ -13,7 +13,9 @@ int main(void)
     int pennies;
 
     do
-    total = get_float("how much change is owed?\n");
+    {
+        total = get_float("how much change is owed?\n");
+    }
     while (total < 0);
     totalPennies = round(total * 100);
     quarters = totalPennies / 25;
@@ -25,7 +27,7 @@ int main(void)
     pennies = newTotal;
 
 
-printf("%i\n", (quarters + dimes + nickles + pennies));
+    printf("%i\n", (quarters + dimes + nickles + pennies));
 //printf("pennies = %i\n",totalPennies);
 //printf("quarters = %i\n", quarters);
 //printf("dimes = %i\n", dimes);
