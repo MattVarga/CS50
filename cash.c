@@ -1,5 +1,6 @@
 #include<cs50.h>
 #include<stdio.h>
+#include<math.h>
 
 int main(void)
 {
@@ -14,7 +15,7 @@ int main(void)
     do
     total = get_float("how much change is owed?\n");
     while (total < 0);
-    totalPennies = (total * 100);
+    totalPennies = round(total * 100);
     quarters = totalPennies / 25;
     newTotal = totalPennies - (quarters * 25);
     dimes = newTotal / 10;
@@ -24,7 +25,7 @@ int main(void)
     pennies = newTotal;
 
 
-printf("%i coins total\n", (quarters + dimes + nickles + pennies));
+printf("%i\n", (quarters + dimes + nickles + pennies));
 //printf("pennies = %i\n",totalPennies);
 //printf("quarters = %i\n", quarters);
 //printf("dimes = %i\n", dimes);
