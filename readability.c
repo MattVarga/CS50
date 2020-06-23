@@ -21,23 +21,23 @@ int main(void)
     //printf("%i word(s)\n", num_words );
     //printf("%i sentence(s)\n", num_sentence);
 
-    float L = letters / num_words * 100;
+    float L = (float)letters / num_words * 100;
+    float S = (float)num_sentence / num_words * 100;
 
-    float S = num_sentence / num_words * 100;
-
-    index = 0.0588 * L - 0.296 * S  - 15.8;
+    index = 0.0588 * L - 0.296 * S - 15.8;
+    
     grade = round(index);
         if (grade < 1)
         {
-           printf("Before Grade 1");
+           printf("Before Grade 1\n");
         }
         if (grade >= 16)
         {
-            printf("Grade 16+");
+            printf("Grade 16+\n");
         }
         else
         {
-            printf("Grade: %i", grade );
+            printf("Grade: %i\n", grade );
         }
 }
 
