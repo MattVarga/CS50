@@ -31,13 +31,13 @@ int main(void)
         {
            printf("Before Grade 1\n");
         }
-        if (grade >= 16)
+        else if (grade >= 16)
         {
             printf("Grade 16+\n");
         }
         else
         {
-            printf("Grade: %i\n", grade );
+            printf("Grade %i\n", grade );
         }
 }
 
