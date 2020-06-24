@@ -6,11 +6,6 @@
 
 int main(int argc, string argv[])
 {
-    if(argc != 2)
-    {
-    printf("Usage: ./caesar key\n");
-    return(1);
-    }
     
     if (argc == 2)
     {
@@ -36,37 +31,89 @@ int main(int argc, string argv[])
                 {
                     if (plaintext[i] + rotate > 'z')
                     {
-                        int excess = plaintext[i] + rotate;
-                        plaintext[i] = 'a' + excess - 1;
-                        
+                        int excess = plaintext[i] + rotate - 'z';
+                       
+                        if (excess >= 'z' - 'a')
+                        {
+                            while (excess >= ('z' - 'a'))
+                            {
+                                excess = excess - (26);
+                            }
+                            
+                            if (plaintext[i] + excess > 'z')
+                            {
+                                excess = plaintext[i] + excess - 'z';
+                                plaintext[i] = 'a' + excess - 1;
+                            }
+                            else
+                            {
+                                plaintext[i] = 'a' + excess - 1;
+                            }
+                        }
+                        else
+                        {
+                                plaintext[i] = 'a' + excess - 1;
+                        }
                     }
                     else if (plaintext[i] + rotate <= 'z')
                     {
-                        plaintext[i] = plaintext[i] + rotate + 1;
+                        plaintext[i] = plaintext[i] + rotate;
+                        
                     }
                 }
-                
                 else if (isupper(plaintext[i]))
                 {
                     if (plaintext[i] + rotate > 'Z')
                     {
-                        int excess = plaintext[i] + rotate;
-                        plaintext[i] = 'A' + excess - 1;
-                        
+                        int excess = plaintext[i] + rotate - 'Z';
+                       
+                        if (excess >= 'Z' - 'A')
+                        {
+                            while (excess >= ('Z' - 'A'))
+                            {
+                                excess = excess - (26);
+                            }
+                            
+                            if (plaintext[i] + excess > 'Z')
+                            {
+                                excess = plaintext[i] + excess - 'Z';
+                                plaintext[i] = 'A' + excess - 1;
+                            }
+                            else
+                            {
+                                plaintext[i] = 'A' + excess - 1;
+                            }
+                        }
+                        else
+                        {
+                                plaintext[i] = 'A' + excess - 1;
+                        }
                     }
                     else if (plaintext[i] + rotate <= 'Z')
                     {
                         plaintext[i] = plaintext[i] + rotate;
+                        
                     }
-                    
-                    
                 }
-                //printf("cyphertext: %s\n", plaintext);
-            }
-            printf("cyphertext: %s\n", plaintext);
-            return 0;
-        
-        
+            printf("ciphertext: %s\n", plaintext);
         }
     }
+    
+    else
+    {
+        printf("Usage: ./caesar key\n");
+        printf("1");
+        return (1);
+    }
+}
+
+    else if (argc != 2)
+    {
+        printf("Usage: ./caesar key\n");
+        printf("1");
+        return (1);
+    }
+        
+        
+    
 }
