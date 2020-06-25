@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
             // write 512 bytes at a time to file if pic found until the next pic is found
             fwrite(&buffer, BUFFER_SIZE, 1, pic);
         }
-        return 0;
+        return 1;
         
     }
 
