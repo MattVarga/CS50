@@ -60,5 +60,5 @@ int main(int argc, char *argv[])
     fclose(input);
     fclose(pic);
 
-    return 0;
+    return 1;
 }
