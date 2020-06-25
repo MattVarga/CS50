@@ -200,11 +200,12 @@ bool is_tie(int min)
             eliminated = eliminated + 1;
         }
     }
-    //if (ties == (candidate_count - eliminated))
-    //{
-       // return true;
-    //}
-    //else
+    //checks to see if it is a tie with all candidates
+    if (ties == (candidate_count - eliminated))
+    {
+       return true;
+    }
+    else
     {
         return false;
     }
