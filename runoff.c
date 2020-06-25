@@ -1,4 +1,4 @@
- #include <cs50.h>
+#include <cs50.h>
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -203,7 +203,7 @@ bool is_tie(int min)
     //checks to see if it is a tie with all candidates
     if (ties == (candidate_count - eliminated))
     {
-       return true;
+        return true;
     }
     else
     {
