@@ -9,12 +9,18 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     RGBTRIPLE pixel;
     int average = 0;
-    for(int h = 0; h < height; h++) {
-        for(int w = 0; w < width; w++) {
+    for (int h = 0; h < height; h++) 
+    {
+        //loops through each pixel and finds the average of each color
+        for (int w = 0; w < width; w++)
+        {
             pixel = image[h][w];
-            average = round(((pixel.rgbtRed + pixel.rgbtGreen + pixel.rgbtBlue)/3.0));
+            average = round(((pixel.rgbtRed + pixel.rgbtGreen + pixel.rgbtBlue) / 3.0));
+            //sets the red to the average of all 3 
             image[h][w].rgbtRed = average;
+            //sets the green to the average of all 3 
             image[h][w].rgbtGreen = average;
+            //sets the blue to the average of all 3 
             image[h][w].rgbtBlue = average;
         }
     }
@@ -27,20 +33,25 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
     int sepiaGreen = 0;
     int sepiaBlue = 0;
 
-    for(int h = 0; h < height; h++) {
-        for(int w = 0; w < width; w++) {
+    for (int h = 0; h < height; h++) 
+    {
+        for (int w = 0; w < width; w++)
+        {
             pixel = image[h][w];
             sepiaRed = round(.393 * pixel.rgbtRed + .769 * pixel.rgbtGreen + .189 * pixel.rgbtBlue);
             sepiaGreen = round(.349 * pixel.rgbtRed + .686 * pixel.rgbtGreen + .168 * pixel.rgbtBlue);
             sepiaBlue = round(.272 * pixel.rgbtRed + .534 * pixel.rgbtGreen + .131 * pixel.rgbtBlue);
 
-            if(sepiaRed > 255) {
+            if (sepiaRed > 255) 
+            {
                 sepiaRed = 255;
             }
-            if(sepiaGreen > 255) {
+            if (sepiaGreen > 255) 
+            {
                 sepiaGreen = 255;
             }
-            if(sepiaBlue > 255) {
+            if (sepiaBlue > 255) 
+            {
                 sepiaBlue = 255;
             }
 
@@ -64,10 +75,12 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 
     RGBTRIPLE(*originalImage)[width] = image;
 
-    int middleOfImage = round(width/2);
+    int middleOfImage = round(width / 2);
 
-    for(int h = 0; h < height; h++) {
-        for(int w = 0; w < middleOfImage; w++) {
+    for (int h = 0; h < height; h++) 
+    {
+        for (int w = 0; w < middleOfImage; w++) 
+        {
             oppositePixelWidthIndex = abs(w - (width - 1));
 
             currentPixelRed = image[h][w].rgbtRed;
@@ -89,11 +102,12 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
         }
     }
 }
-
-bool isInsideImageBoundary(int currentRow, int currentColumn, int height, int width) {
+//check that the image is within the boundary
+bool isInsideImageBoundary(int currentRow, int currentColumn, int height, int width)
+{
     return (currentRow >= 0 && currentRow < height) && (currentColumn >= 0 && currentColumn < width);
 }
-// Blur image
+// Blurs image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     float pixelsInBlurBox = 0.0;
@@ -105,21 +119,27 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     int currentColumn = 0;
 
     RGBTRIPLE originalImage[height][width];
-    for(int h = 0; h < height; h++) {
-        for(int w = 0; w < width; w++) {
+    for (int h = 0; h < height; h++)
+    {
+        for (int w = 0; w < width; w++)
+        {
             originalImage[h][w] = image[h][w];;
         }
     }
 
     RGBTRIPLE pixel;
-    for(int h = 0; h < height; h++) {
-        for(int w = 0; w < width; w++) {
-            for(int row = -1; row < 2; row++) {
-                for(int column = -1; column < 2; column++) {
+    for (int h = 0; h < height; h++) 
+    {
+        for (int w = 0; w < width; w++)
+        {
+            for (int row = -1; row < 2; row++) 
+            {
+                for (int column = -1; column < 2; column++)
+                {
                     currentRow = h + row;
                     currentColumn = w + column;
 
-                    if(isInsideImageBoundary(currentRow,currentColumn,height,width) == true)
+                    if (isInsideImageBoundary(currentRow, currentColumn, height, width) == true)
                     {
                         pixel = originalImage[currentRow][currentColumn];
                         blurBoxTotalRedPixel += pixel.rgbtRed;
@@ -128,7 +148,9 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 
                         pixelsInBlurBox++;
                         //printf("In boundary: (%d,%d) \t",currentRow,currentColumn);
-                    } else {
+                    } 
+                    else
+                    {
                         //printf("Out boundary:(%d,%d) \t",currentRow,currentColumn);
                     }
                 }
