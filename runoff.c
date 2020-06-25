@@ -125,7 +125,7 @@ int main(int argc, string argv[])
     }
     return 0;
 }
-
+//tallies the vote
 bool vote(int voter, int rank, string name)
 {
     for (int i = 0; i < candidate_count; i++)
@@ -139,7 +139,7 @@ bool vote(int voter, int rank, string name)
     }
     return false;
 }
-
+//counts total votes
 void tabulate(void)
 {
     for (int i = 0; i < voter_count; i++)
@@ -152,6 +152,8 @@ void tabulate(void)
         candidates[preferences[i][column]].votes++;
     }
 }
+
+//prints out the winner
 bool print_winner(void)
 {
     int majority = floor(voter_count / 2) + 1;
@@ -168,6 +170,7 @@ bool print_winner(void)
     }
     return false;
 }
+//find the candidate with the least amount of votes
 int find_min(void)
 {
     int min_votes = voter_count;
@@ -180,6 +183,7 @@ int find_min(void)
     }
     return min_votes;
 }
+//checks to see if it is a tie
 bool is_tie(int min)
 {
     int ties;
@@ -196,16 +200,16 @@ bool is_tie(int min)
             eliminated = eliminated + 1;
         }
     }
-    if (ties == (candidate_count - eliminated))
-    {
-        return true;
-    }
-    else
+    //if (ties == (candidate_count - eliminated))
+    //{
+       // return true;
+    //}
+    //else
     {
         return false;
     }
 }
-
+//eliminates the candidate with the least amount of votes
 void eliminate(int min)
 {
     for (int i = 0; i < candidate_count; i++)
