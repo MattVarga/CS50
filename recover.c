@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     if (input == NULL)
     {
         printf("unable to open card.raw.\n");
-        return 0;
+        return 1;
     }
     
     // creates new buffer of 512 bytes
