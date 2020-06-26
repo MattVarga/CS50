@@ -36,10 +36,14 @@ int main(int argc, char *argv[])
                 // found the beginning of a new pic
                 fclose(pic);
             }
-            else
+            else if
             {
                 // jpg found
-                new_pic = 0;
+                new_pic = 1;
+            }
+            else
+            {
+                return 0;
             }
             
             char filename[8];
