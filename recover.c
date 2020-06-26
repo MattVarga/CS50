@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <cs50.h>
 
-int main(int argc, char *argv[])
 #define BUFFER_SIZE 512
 
-//int main(void)
+int main(int argc, char *argv[])
 {
     // open input file
     FILE *input = fopen(argv[1], "r");
@@ -22,7 +21,7 @@ int main(int argc, char *argv[])
     // creates an integer file_num for file names
     int file_num = 0;
     
-    FILE *pic = NULL; 
+    pic = NULL; 
     
     int new_pic = 0; 
    
