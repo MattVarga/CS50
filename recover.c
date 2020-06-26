@@ -53,8 +53,10 @@ int main(int argc, char *argv[])
             // writes to file until the next pic is found
             fwrite(&buffer, BUFFER_SIZE, 1, pic);
         }
-        return 1;
-    }
+        if (*input < BUFFER_SIZE)
+        {
+            return 1;
+        }
 
     // close all files
     fclose(input);
