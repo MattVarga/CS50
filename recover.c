@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
             else
             {
                 // jpg found
-                new_pic = 1;
+                new_pic = 0;
             }
             
             char filename[8];
