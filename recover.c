@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     // creates an integer file_num for file names
     int file_num = 0;
     
-    pic = NULL; 
+    FILE *pic = NULL; 
     
     int new_pic = 0; 
    
