@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
     // creates new buffer of 512 bytes
     unsigned char buffer[BUFFER_SIZE];
     
-    // creates an integer filenum for file names
-    int filenum = 0;
+    // creates an integer file_num for file names
+    int file_num = 0;
     
     FILE *pic = NULL; 
     
@@ -36,20 +36,16 @@ int main(int argc, char *argv[])
                 // found the beginning of a new pic
                 fclose(pic);
             }
-            else if
+            else
             {
                 // jpg found
                 new_pic = 1;
             }
-            else
-            {
-                return 0;
-            }
             
             char filename[8];
-            sprintf(filename, "%03i.jpg", filenum);
+            sprintf(filename, "%03i.jpg", file_num);
             pic = fopen(filename, "w");
-            filenum++;
+            file_num++;
         }
         
         if (new_pic == 1)
