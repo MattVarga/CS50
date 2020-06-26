@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         {
             if (new_pic == 1)
             {
-                // found the end of a pic
+                // found the beginning of a new pic
                 fclose(pic);
             }
             else
@@ -46,19 +46,19 @@ int main(int argc, char *argv[])
             sprintf(filename, "%03i.jpg", file_num);
             pic = fopen(filename, "w");
             file_num++;
-            }
+        }
         
         if (new_pic == 1)
         {
-            // writes to file until the next pic is found
+            // write 512 bytes at a time to file if pic found until the next pic is found
             fwrite(&buffer, BUFFER_SIZE, 1, pic);
         }
-       
+        
+    }
 
     // close all files
     fclose(input);
     fclose(pic);
 
     return 0;
-    }
 }
