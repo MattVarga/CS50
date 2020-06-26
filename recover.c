@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cs50.h>
-#include <string.h>
 
 int main(int argc, char *argv[])
 #define BUFFER_SIZE 512
@@ -15,8 +14,6 @@ int main(int argc, char *argv[])
         printf("unable to open card.raw.\n");
         return 1;
     }
-    
-    
     
     // creates new buffer of 512 bytes
     unsigned char buffer[BUFFER_SIZE];
@@ -63,6 +60,4 @@ int main(int argc, char *argv[])
     fclose(pic);
 
     return 0;
-    }
 }
-
