@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
             // writes to file until the next pic is found
             fwrite(&buffer, BUFFER_SIZE, 1, pic);
         }
-        if (*input < BUFFER_SIZE)
+        if (buffer < BUFFER_SIZE)
         {
             return 1;
         }
