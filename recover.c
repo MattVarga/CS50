@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cs50.h>
+#include <string.h>
 
 int main(int argc, char *argv[])
 #define BUFFER_SIZE 512
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
         printf("unable to open card.raw.\n");
         return 1;
     }
+    
+    
     
     // creates new buffer of 512 bytes
     unsigned char buffer[BUFFER_SIZE];
@@ -53,14 +56,13 @@ int main(int argc, char *argv[])
             // writes to file until the next pic is found
             fwrite(&buffer, BUFFER_SIZE, 1, pic);
         }
-        if (buffer < BUFFER_SIZE)
-        {
-            return 1;
-        }
+       
 
     // close all files
     fclose(input);
     fclose(pic);
 
     return 0;
+    }
 }
+
