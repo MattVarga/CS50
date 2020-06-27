@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <strings.h>
 #include "dictionary.h"
 
 // Represents a node in a hash table
@@ -17,43 +16,58 @@ typedef struct node
 node;
 
 // Number of buckets in hash table
-const unsigned int N = 26;
-
+const unsigned int N = 65536;
 // Hash table
 node *table[N];
+
+// Number of words in dictionary
+int wordcount = 0; 
+
+unsigned int hash(const char *word)
+{
+    unsigned int hash = 5381;
+    int c;
+
+    while ((c = *word++))
+    {
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    }
+
+    return hash % N;
+}
 
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    char wordcheck[LENGTH + 1];
-
-    strcpy(wordcheck, word);
-
-    for (int i = 0; i < strlen(wordcheck); i++)
+    // Copies "word" to "input", then lowercases "input"
+    int length = strlen(word);
+    char input[length];
+    strcpy(input, word);
+    for (int i = 0; i < length; i++)
     {
-        wordcheck[i] = tolower(wordcheck[i]);
+        input[i] = tolower(input[i]);
     }
 
-    int hashkey = hash(wordcheck);
+    // Hashes input word
+    unsigned int hashnum = hash(input);
 
-    node *head = hashtable[hashkey];
-
-    cursor = head;
-
-    while (cursor != NULL)
+    // Checks for input word in hash table
+    bool found = false;
+    for (node *tmp = table[hashnum]; tmp != NULL; tmp = tmp->next)
     {
-        if (strcasecmp(wordcheck, cursor->word) == 0)
+        if (strcmp(tmp->word, input) == 0)
         {
-            return true;
-        }
-        else
-        {
-            cursor = cursor->next;
+            found = true;
+            break;
         }
     }
+    return found;
+}
 
-    //if word is not in dictionary
-    return false;
+// Returns number of words in dictionary if loaded else 0 if not yet loaded
+unsigned int size(void)
+{
+    return wordcount;
 }
 
 // Hashes word to a number
@@ -66,44 +80,60 @@ unsigned int hash(const char *word)
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    c   char word[LENGTH + 1];
-
     FILE *dict = fopen(dictionary, "r");
     if (dict == NULL)
     {
-        fprintf(stderr, "Could not open Dictionary");
         return false;
     }
 
-    /* -MAKE NEW WORD- use "fscanf" to scan through file(dictionary) for a string, put that string in the variable "word". Execute loop
-    until end of dictionary file*/
-    while (fscanf(dict, "%s", word) != EOF)
+    // Useful variables
+    char c = fgetc(dict);
+    char neww[LENGTH + 1];
+
+    // Iteration over every character in the dictionary
+    while (c != EOF)
     {
-        node *new_node = malloc(sizeof(node));
-        new_node->next = NULL;
-        if (new_node == NULL)
+        // neww = new word from dict
+        for (int i = 0; i < LENGTH + 1; i++) // Iteration over one whole word
         {
-            unload();
-            return false;
+            if (c != '\n') // '\n' = beginning of a new word
+            {
+                neww[i] = c;
+                c = fgetc(dict);
+            }
+            else
+            {
+                neww[i] = '\0';
+                wordcount++;
+                c = fgetc(dict);
+                break;
+            }
         }
-        strcpy(new_node->word, word);
-        int hashvalue = hash(word);
-        if (hashtable[hashvalue] == NULL)
+
+        // Hashing neww
+        unsigned int hashnum = hash(neww);
+
+        // Creating newn
+        node *newn = malloc(sizeof(node));
+        strcpy(newn->word, neww);
+        newn->next = NULL;
+
+        // Adding newn to hashtable
+        if (table[hashnum] == NULL)
         {
-            hashtable[hashvalue] = new_node;
+            table[hashnum] = newn;
         }
         else
         {
-            new_node->next = hashtable[hashvalue];
-            hashtable[hashvalue] = new_node;
+            newn->next = table[hashnum];
+            table[hashnum] = newn;
         }
 
-        wordcount++;
     }
+
     fclose(dict);
     return true;
 }
-
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
@@ -114,15 +144,19 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-     for (int i = 0, n = 26; i < n; i++)
+    for (int i = 0; i < N; i++)
     {
-        cursor = hashtable[i];
-        while (cursor != NULL)
+        node *tmp = table[i];
+        node *next = NULL;
+
+        while (tmp != NULL)
         {
-            node *temp = cursor;
-            cursor = cursor->next;
-            free(temp);
+            next = tmp->next;
+            free(tmp);
+            tmp = next;
         }
+
+        table[i] = NULL;
     }
     return true;
 }
