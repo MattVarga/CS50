@@ -8,40 +8,30 @@
 
 #include "dictionary.h"
 
-// Represents a node in a hash table
+// Represents a hash node 
 typedef struct node
 {
     char word[LENGTH + 1];
     struct node *next;
 }
 node;
-
 // Number of buckets in hash table
-const unsigned int N = 65536; /* For an explanantion of why this number was chosen, see 
-www.reddit.com/r/cs50/comments/ey5q5j/pset5_speller_whyyy_int_n_65536/ */
-
-// Hash table
+const unsigned int N = 65536;
 node *table[N];
-
 // Number of words in dictionary
-int wordcount = 0; // will be useful in sizing up the dictionary later on //
-
+int wordcount = 0; 
 // Hashes word to a number
-// djb2 algorithm
 unsigned int hash(const char *word)
 {
     unsigned int hash = 5381;
     int c;
-
     while ((c = *word++))
     {
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
     }
-
     return hash % N;
 }
-
-// Loads dictionary into memory, returning true if successful else false
+// Loads dictionary into memory
 bool load(const char *dictionary)
 {
     FILE *dict = fopen(dictionary, "r");
@@ -49,40 +39,32 @@ bool load(const char *dictionary)
     {
         return false;
     }
-
-    // Useful variables
     char c = fgetc(dict);
-    char neww[LENGTH + 1];
-
-    // Iteration over every character in the dictionary
+    char new_word[LENGTH + 1];
+    // loops through dictionary
     while (c != EOF)
     {
-        // neww = new word from dict
-        for (int i = 0; i < LENGTH + 1; i++) // Iteration over one whole word
+        for (int i = 0; i < LENGTH + 1; i++) 
         {
-            if (c != '\n') // '\n' = beginning of a new word
+            if (c != '\n') 
             {
-                neww[i] = c;
+                new_word[i] = c;
                 c = fgetc(dict);
             }
             else
             {
-                neww[i] = '\0';
+                new_word[i] = '\0';
                 wordcount++;
                 c = fgetc(dict);
                 break;
             }
         }
-
-        // Hashing neww
-        unsigned int hashnum = hash(neww);
-
-        // Creating newn
+        //new_word
+        unsigned int hashnum = hash(new_word);
         node *newn = malloc(sizeof(node));
-        strcpy(newn->word, neww);
+        strcpy(newn->word, new_word);
         newn->next = NULL;
-
-        // Adding newn to hashtable
+        // Adding to hashtable
         if (table[hashnum] == NULL)
         {
             table[hashnum] = newn;
@@ -92,14 +74,12 @@ bool load(const char *dictionary)
             newn->next = table[hashnum];
             table[hashnum] = newn;
         }
-
     }
-
     fclose(dict);
     return true;
 }
 
-// Returns true if word is in dictionary else false
+// Returns true if word is in dictionary
 bool check(const char *word)
 {
     // Copies "word" to "input", then lowercases "input"
@@ -110,10 +90,8 @@ bool check(const char *word)
     {
         input[i] = tolower(input[i]);
     }
-
     // Hashes input word
     unsigned int hashnum = hash(input);
-
     // Checks for input word in hash table
     bool found = false;
     for (node *tmp = table[hashnum]; tmp != NULL; tmp = tmp->next)
@@ -126,14 +104,12 @@ bool check(const char *word)
     }
     return found;
 }
-
-// Returns number of words in dictionary if loaded else 0 if not yet loaded
+// Returns num of words in dictionary 
 unsigned int size(void)
 {
     return wordcount;
 }
-
-// Unloads dictionary from memory, returning true if successful else false
+// Unloads dictionary
 bool unload(void)
 {
     for (int i = 0; i < N; i++)
@@ -147,7 +123,6 @@ bool unload(void)
             free(tmp);
             tmp = next;
         }
-
         table[i] = NULL;
     }
     return true;
