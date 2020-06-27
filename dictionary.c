@@ -1,10 +1,11 @@
 // Implements a dictionary's functionality
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <ctype.h>
-#include <stdbool.h>
+#include <string.h>
+
 #include "dictionary.h"
 
 // Represents a node in a hash table
@@ -16,13 +17,17 @@ typedef struct node
 node;
 
 // Number of buckets in hash table
-const unsigned int N = 65536;
+const unsigned int N = 65536; /* For an explanantion of why this number was chosen, see 
+www.reddit.com/r/cs50/comments/ey5q5j/pset5_speller_whyyy_int_n_65536/ */
+
 // Hash table
 node *table[N];
 
 // Number of words in dictionary
-int wordcount = 0; 
+int wordcount = 0; // will be useful in sizing up the dictionary later on //
 
+// Hashes word to a number
+// djb2 algorithm
 unsigned int hash(const char *word)
 {
     unsigned int hash = 5381;
@@ -34,47 +39,6 @@ unsigned int hash(const char *word)
     }
 
     return hash % N;
-}
-
-// Returns true if word is in dictionary else false
-bool check(const char *word)
-{
-    // Copies "word" to "input", then lowercases "input"
-    int length = strlen(word);
-    char input[length];
-    strcpy(input, word);
-    for (int i = 0; i < length; i++)
-    {
-        input[i] = tolower(input[i]);
-    }
-
-    // Hashes input word
-    unsigned int hashnum = hash(input);
-
-    // Checks for input word in hash table
-    bool found = false;
-    for (node *tmp = table[hashnum]; tmp != NULL; tmp = tmp->next)
-    {
-        if (strcmp(tmp->word, input) == 0)
-        {
-            found = true;
-            break;
-        }
-    }
-    return found;
-}
-
-// Returns number of words in dictionary if loaded else 0 if not yet loaded
-unsigned int size(void)
-{
-    return wordcount;
-}
-
-// Hashes word to a number
-unsigned int hash(const char *word)
-{
-     int hash = (tolower(word[0]) - 'a');
-    return hash;
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -135,11 +99,39 @@ bool load(const char *dictionary)
     return true;
 }
 
+// Returns true if word is in dictionary else false
+bool check(const char *word)
+{
+    // Copies "word" to "input", then lowercases "input"
+    int length = strlen(word);
+    char input[length];
+    strcpy(input, word);
+    for (int i = 0; i < length; i++)
+    {
+        input[i] = tolower(input[i]);
+    }
+
+    // Hashes input word
+    unsigned int hashnum = hash(input);
+
+    // Checks for input word in hash table
+    bool found = false;
+    for (node *tmp = table[hashnum]; tmp != NULL; tmp = tmp->next)
+    {
+        if (strcmp(tmp->word, input) == 0)
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
 {
     return wordcount;
-    }
+}
 
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
