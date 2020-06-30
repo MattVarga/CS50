@@ -1,0 +1,40 @@
+
+.container
+{
+    background-color:white;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding:30px;
+    border-radius: 10px;
+
+}
+
+h1, h2
+{
+    text-align: center;
+    color: blue;
+}
+
+footer
+{
+    font-size: 11px;
+    text-align: center;
+    border-top: 2px solid black;
+    padding-top: 20px;
+    margin-top: 20px;
+    color: blue;
+}
+textarea
+{
+    height: 150px!important;
+    resize: none;
+}
+.alert
+{
+    display: none;
+}
+    body
+    {
+        background-color: white;
+    }
+    
