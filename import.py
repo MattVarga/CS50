@@ -1,29 +1,40 @@
-from cs50 import SQL
-from csv import reader
-from sys import argv
+import cs50
+import csv
+import os
+from sys import argv, exit
 
-# open the database
-db = SQL("sqlite:///students.db")
+# Check the command line argument to make sure it is a file
+if not (len(argv) == 2 and os.path.isfile(argv[1]) and ".csv" in argv[1]):
+    print("Usage: python import.py filename")
+    exit(1)
 
-# checks the arguments
-if len(argv) < 2:
-    print("Error")
-    exit()
+# Open database
+db = cs50.SQL("sqlite:///students.db")
 
-# open the file with the students info
-with open(argv[1], newline='') as charactersFile:
-    characters = reader(charactersFile)
-    for character in characters:
-        if character[0] == 'name':
-            continue
+# Open CSV file for reading
+with open(argv[1], "r") as file:
 
-        # split the full name into first, last and middle name
-        fullName = character[0]
-        #if the student has no middle name
-        if len(fullName) < 3:
-            db.execute("INSERT INTO students DISTINCT(first, middle, last, house, birth) VALUES(?, ?, ?, ?, ?)",
-                       fullName[0], None, fullName[1], character[1], character[2])
+    # Create DictReader
+    reader = csv.DictReader(file)
 
+    # Iterate over each row in the file using the reader
+    for row in reader:
+        name = row["name"].split(' ')
+
+        # If there is a middle name
+        if len(name) == 3:
+            # Import student's first, middle, last name into the database
+            db.execute("INSERT INTO students (first, middle, last, house, birth) VALUES(?, ?, ?, ?, ?)",
+                       name[0], name[1], name[2], row["house"], row["birth"])
+        # If there is not a middle name
+        elif len(name) == 2:
+            # Import student's first, middle, last name into the database with his/her middle name being a NULL placeholder
+            db.execute("INSERT INTO students (first, middle, last, house, birth) VALUES(?, ?, ?, ?, ?)",
+                       name[0], None, name[1], row["house"], row["birth"])
+        # If first/last name is missing or there is more than 3 name values
         else:
-            db.execute("INSERT INTO students DISTINCT(first, middle, last, house, birth) VALUES(?, ?, ?, ?, ?)",
-                       fullName[0], fullName[1], fullName[2], character[1], character[2])
+            print("Unacceptbale name detected")
+            exit(2)
+
+    # Success
+    exit(0)
