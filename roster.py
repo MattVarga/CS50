@@ -8,7 +8,7 @@ if len(argv) < 2:
 
 # open the database in a variable and then execute a query that list all the people from a particular house in alphabetical order
 db = SQL("sqlite:///students.db")
-students = db.execute("SELECT * FROM students WHERE house = (?) GROUP BY last", argv[1])
+students = db.execute("SELECT * FROM students WHERE house = (?) GROUP BY first", argv[1])
 
 # print each person 
 for student in students:
