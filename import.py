@@ -1,4 +1,5 @@
 import cs50
+from cs50 import SQL
 import csv
 import os
 from sys import argv, exit
@@ -9,7 +10,7 @@ if not (len(argv) == 2 and os.path.isfile(argv[1]) and ".csv" in argv[1]):
     exit(1)
 
 # Open database
-db = cs50.SQL("sqlite:///students.db")
+db = SQL("sqlite:///students.db")
 
 # Open CSV file for reading
 with open(argv[1], "r") as file:
@@ -28,12 +29,12 @@ with open(argv[1], "r") as file:
                        name[0], name[1], name[2], row["house"], row["birth"])
         # If there is not a middle name
         elif len(name) == 2:
-            # Import first, middle, last name into the database with his/her middle name being null
+            # Import first, last name into the database with his/her middle name being null
             db.execute("INSERT INTO students (first, middle, last, house, birth) VALUES(?, ?, ?, ?, ?)",
                        name[0], None, name[1], row["house"], row["birth"])
         # If first/last name is missing or there is more than 3 name values
         else:
-            print("Unacceptbale name detected")
+            print("Error with name")
             exit(2)
             
     exit(0)
